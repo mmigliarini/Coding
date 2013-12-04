@@ -1,7 +1,7 @@
 <?php
 /**
  * Palindrome is a collection of utilities for Palindromic String.
- * It includes methods for getting longet palindrome, inverse a number, etc.
+ * It includes methods for getting longest palindrome, etc.
  *
  * @author     Mauro Migliarini <mauro.migliarini@mail.polimi.it>
  * @copyright  2013 Mauro Migliarini
