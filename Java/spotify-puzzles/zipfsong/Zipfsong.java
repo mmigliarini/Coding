@@ -5,7 +5,7 @@
  * @copyright  2013 Mauro Migliarini
  * @license    http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link       http://github.com/mmigliarini
- * @version    1.0.0
+ * @version    1.1.0
  */
 
 package com.spotify.zipfsong;
@@ -27,7 +27,7 @@ public class Zipfsong {
 	//  If two songs have the same quality, give precedence to the one appearing first on the album 
 	//  (presumably there was a reason for the producers to put that song before the other).
 
-	
+	static boolean debug = false;
 	
     /**
      * Application entry point.
@@ -37,15 +37,13 @@ public class Zipfsong {
 	public static void main(String[] args){
 
 		
-        int n = 0;						// number of songs on the album
-        int m = 0;						// number of songs to select
+        int n = 0;		// number of songs on the album
+        int m = 0;		// number of songs to select
 		
 		
 		// Initialize BufferReader, read lines from STDIN
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.flush();
-               
-        
+       
         
         // ** 1. Retrive n and m from the first line
         try {
@@ -53,15 +51,17 @@ public class Zipfsong {
             String[] firstLine = sLine.split(" ");
             
             n = Integer.parseInt(firstLine[0]);
-            //System.out.println("Numero n: " + n);
+            if (debug == true) 
+            	System.out.println("n: " + n);
             m = Integer.parseInt(firstLine[1]);
-            //System.out.println("Numero m: " + m);
+            if (debug == true) 
+            	System.out.println("m: " + m);
             
             if(n < 1 || n > 50000 || m < 1 || m > n) {
-            	System.exit(-1);
+            	System.exit(0);
             }
         } catch (Exception e){
-        	System.exit(-1);
+        	System.exit(0);
         }
 
         
@@ -70,6 +70,8 @@ public class Zipfsong {
         float[] qi = new float[n];		// array song quality index
         String[] si = new String[n];	// array song title
         
+        // compute 10^12, upper bound limit for how many times a song was listened
+        int uBound = (int) Math.pow(10, 12);
 
         for(int i = 0; i < n; i++){
         	
@@ -81,27 +83,30 @@ public class Zipfsong {
 	        	
 	        	// get integer: how many times a song was listened (0 - 1012 times)
 	        	fi[i] = Integer.parseInt(songLine[0]);
-	        	//System.out.println("Numero fi: " + fi[i]);
+	        	if (debug == true)
+	        		System.out.println("fi: " + fi[i]);
 	        	
-	        	if(fi[i] < 0 || fi[i] > 1012){
-	        		System.exit(-1);
+	        	if(fi[i] < 0 || fi[i] > uBound){
+	        		System.exit(0);
 	        	}
 
 	        	// get string: name of the song (30 chars, a-z, 0-9, _)
 	        	si[i] = songLine[1];
-	        	//System.out.println("Stringa si: " + si[i]);   
+	        	if (debug == true)
+	        		System.out.println("si: " + si[i]);   
 	        	
 	        	if(!si[i].matches("[a-z0-9_]{1,30}")){
-	        		System.exit(-1);
+	        		System.exit(0);
 	        	}
 	        	
 	        	qi[i] = (float) fi[i]/(fi[0]/(i+1));
-	        	//System.out.println("Qualità qi: " + qi[i]);
+	        	if (debug == true)
+	        		System.out.println("qi: " + qi[i]);
 	        	
 	        	
 	        	
             } catch (Exception e){
-            	System.exit(-1);
+            	System.exit(0);
             }
         }
         
@@ -162,7 +167,9 @@ public class Zipfsong {
 	private static void printChart(String[] si, int m){
 		
         for (int i = si.length - 1; i > si.length - 1 - m; i--) {
-            System.out.println(si[i]);
+            System.out.print(si[i]);
+            if(i  > si.length - m)
+            	System.out.println("");
         }
 		
 	}
