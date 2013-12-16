@@ -1,7 +1,7 @@
 package com.spotify.reversebinary;
 import java.util.Scanner;
 
-public class Main {
+public class ReverseBinary {
 
 	//	Your task will be to write a program for reversing numbers in binary. 
 	//	For instance, the binary representation of 13 is 1101, and reversing it gives 1011, which corresponds to number 11.
@@ -17,8 +17,7 @@ public class Main {
 		Scanner in = new Scanner(System.in);
 		int num = getNumber(in);
 
-		// Create SpotifyNumber variable and print the reversed number
-		// SpotifyNumber sn = new SpotifyNumber(num);
+		// Printer reversed binary number
 		System.out.println(getReversedNumber(num));
   	}
 	
@@ -61,8 +60,8 @@ public class Main {
 		byte[] binaryNum = new byte[30];	// Using a byte data type, since is the smallest one (the boolean has a 'not specified' size). 
 											// The array is initialized to handle 30 byte, since an integer <= 1000000 can be rappresented with 30 bits.
 		while ( iNum > 0 ) {
-			binaryNum[i++] = (byte)(iNum & 1);
-			iNum = iNum >> 1;
+			binaryNum[i++] = (byte)(iNum & 1);		// & compare LSB
+			iNum = iNum >> 1;						// >> right shift
 		}
 
 
@@ -71,7 +70,7 @@ public class Main {
 		int iRev = 0;
 		for(int a = (i-1); a>=0; a--){
 			iRev = iRev + binaryNum[a]*t;
-			t*=2;	// exp
+			t = t << 1;	// exp
 		}
 		
 		return iRev;	
